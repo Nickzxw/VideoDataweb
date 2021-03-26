@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- resultMap最终还是要将结果映射到pojo上，type就是指定映射到哪一个pojo -->
+<!--登录注册Mapper-->
+<mapper namespace="com.springboot.dao.UserMapper">
+    <!--注册-->
+    <insert id="save">
+        insert into User(id, username, password) values (#{id}, #{username}, #{password})
+    </insert>
+
+    <!--登录-->
+    <select id="login" resultType="com.springboot.entity.User">
+        select id, username, password from User
+        where username=#{username} and password=#{password}
+    </select>
+    <!--查询登录-->
+    <select id="findByName">
+        select id, username, password from User
+        where username=#{username} and password=#{password}
+    </select>
+</mapper>

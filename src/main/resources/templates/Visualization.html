@@ -1,0 +1,673 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>主机游戏数据分析系统</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/comon0.css">
+</head>
+<script>
+    $(window).load(function () {
+        $(".loading").fadeOut()
+    })
+
+    /****/
+    $(document).ready(function () {
+        var whei = $(window).width()
+        $("html").css({fontSize: whei / 20})
+        $(window).resize(function () {
+            var whei = $(window).width()
+            $("html").css({fontSize: whei / 20})
+        });
+    });
+</script>
+<body>
+
+<div class="loading">
+    <div class="loadbox"><img src="images/loading.gif"> 页面加载中...</div>
+</div>
+<div class="head">
+    <h1><img src="images/logoNick.png">主机游戏数据分析系统</h1>
+    <div class="weather"><img src="images/weather.png"><!--<img src="picture/weather.png"><span>多云转小雨</span>--><span
+            id="showTime"></span></div>
+
+    <script>
+        var t = null;
+        t = setTimeout(time, 1000);//開始运行
+        function time() {
+            clearTimeout(t);//清除定时器
+            dt = new Date();
+            var y = dt.getFullYear();
+            var mt = dt.getMonth() + 1;
+            var day = dt.getDate();
+            var h = dt.getHours();//获取时
+            var m = dt.getMinutes();//获取分
+            var s = dt.getSeconds();//获取秒
+            document.getElementById("showTime").innerHTML = y + "年" + mt + "月" + day + "-" + h + "时" + m + "分" + s + "秒";
+            t = setTimeout(time, 1000); //设定定时器，循环运行
+        }
+
+    </script>
+</div>
+<div class="mainbox">
+    <ul class="clearfix">
+        <li>
+            <div class="boxall" style="height: 2.7rem">
+                <div class="alltitle">数据总览</div>
+
+                <div class="sycm">
+                    <ul class="clearfix">
+                        <li><h2>26634</h2><span>游戏总数</span></li>
+                        <li><h2>31</h2><span>游戏平台总数</span></li>
+                        <li><h2>12</h2><span>游戏类型总数</span></li>
+                    </ul>
+                    <div style="border-bottom: 1px solid rgba(255,255,255,.1)"></div>
+                    <ul class="clearfix">
+                        <li><h2>578</h2><span>发行商总数</span></li>
+                        <li><h2>31562</h2><span>源数据量</span></li>
+                        <li><h2>26634</h2><span>处理后数据量</span></li>
+                    </ul>
+                </div>
+                <div class="boxfoot"></div>
+            </div>
+            <div class="boxall" style="height: 2.65rem">
+                <div class="alltitle">三大主机游戏平台占比</div>
+                <div class="sy" id="echarts1" style="height: 175px; width: 116px;"></div>
+                <div class="sy" id="echarts2" style="height: 175px; width: 116px;"></div>
+                <div class="sy" id="echarts3" style="height: 175px; width: 116px;"></div>
+                <div class="boxfoot"></div>
+            </div>
+            <div class="boxall" style="height: 2.95rem">
+                <div class="alltitle">主机游戏数据游戏类型统计</div>
+                <div id="echarts4" style="height: 169px; width: 351px;"></div>
+                <div class="boxfoot"></div>
+            </div>
+        </li>
+        <li>
+            <div class="bar">
+                <div class="barbox">
+                    <ul class="clearfix">
+                        <li class="pulll_left counter" style="font-family: myFont" id="num1">134217728</li>
+                        <li class="pulll_left counter" style="font-family: myFont" id="num2">33554432</li>
+                    </ul>
+                </div>
+                <div class="barbox2">
+                    <ul class="clearfix">
+                        <li class="pulll_left">2020年全球游戏市场的总收入情况（单位：千万元）</li>
+                        <li class="pulll_left">2020年全球主机游戏市场总收入情况（单位：千万元）</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="map">
+                <div class="map1"><img src="images/lbx.png"></div>
+                <div class="map2"><img src="images/jt.png"></div>
+                <div class="map3"><img src="images/map.png"></div>
+                <div class="map4" id="map_1"></div>
+            </div>
+
+        </li>
+        <li>
+            <div class="boxall" style="height:5.2rem">
+                <div class="alltitle">主机游戏十大发行商</div>
+                <div class="wrap" id="echarts5" style="height: 350px; width: 353px;"></div>
+                <div class="boxfoot"></div>
+            </div>
+            <div class="boxall" style="height: 3.4rem">
+                <div class="alltitle">2022全球游戏市场分布</div>
+                <div class="wrap">
+                    <ul>
+                        <li>
+                            <p>No1——亚太地区——5127.36亿——49%</p>
+                        </li>
+                        <li>
+                            <p>No2——北美地区——2616.23亿——25%</p>
+                        </li>
+                        <li>
+                            <p>No3——欧洲地区——1935.84亿——19%</p>
+                        </li>
+                        <li>
+                            <p>No4——拉美地区——392.43亿——4%</p>
+                        </li>
+                        <li>
+                            <p>No5——中东及非洲——353.16亿——3%</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="boxfoot"></div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="back"></div>
+<script language="JavaScript" src="js/js.js"></script>
+<script type="text/javascript" src="js/echarts.min.js"></script>
+<script type="text/javascript" src="js/china.js"></script>
+<script type="text/javascript" src="js/area_echarts.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        myChart1.resize();
+        myChart2.resize();
+        myChart3.resize();
+    })
+    window.addEventListener("resize", function () {
+        myChart1.resize();
+        myChart2.resize();
+        myChart3.resize();
+    });
+</script>
+
+<script type="text/javascript">
+    // 三大平台
+    var myChart1 = echarts.init(document.getElementById('echarts1'));
+    var v1 = 3435;
+    var v2 = 3355;
+    var v3 = 2077;
+    var v4 = 26634;
+    option1 = {
+
+        series: [{
+            type: 'pie',
+            radius: ['70%', '80%'],
+            color: '#FF1493',
+            label: {
+                normal: {
+                    position: 'center'
+                }
+            },
+            data: [{
+                value: v1,
+                name: 'DS任天堂',
+                label: {
+                    normal: {
+                        formatter: v1 + '',
+                        textStyle: {
+                            fontSize: 20,
+                            color: '#fff',
+                        }
+                    }
+                }
+            }, {
+                value: v4,
+                name: 'DS',
+                label: {
+                    normal: {
+                        formatter: function (params) {
+                            return '占比' + Math.round(v1 / v4 * 100) + '%'
+                        },
+                        textStyle: {
+                            color: '#aaa',
+                            fontSize: 12
+                        }
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(255,255,255,.2)'
+                    },
+                    emphasis: {
+                        color: '#fff'
+                    }
+                },
+            }]
+        }]
+    };
+
+
+    var myChart3 = echarts.init(document.getElementById('echarts3'));
+    var v1 = 3435;
+    var v2 = 3355;
+    var v3 = 2077;
+    var v4 = 26634;
+    option2 = {
+
+
+        series: [{
+            type: 'pie',
+            radius: ['70%', '80%'],
+            color: '#fccb00',
+            label: {
+                normal: {
+                    position: 'center'
+                }
+            },
+            data: [{
+                value: v2,
+                name: 'DS',
+                label: {
+                    normal: {
+                        formatter: v2 + '',
+                        textStyle: {
+                            fontSize: 20,
+                            color: '#fff',
+                        }
+                    }
+                }
+            }, {
+                value: v4,
+                name: 'PS2',
+                label: {
+                    normal: {
+                        formatter: function (params) {
+                            return '占比' + Math.round(v2 / v4 * 100) + '%'
+                        },
+                        textStyle: {
+                            color: '#aaa',
+                            fontSize: 12
+                        }
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(255,255,255,.2)'
+                    },
+                    emphasis: {
+                        color: '#fff'
+                    }
+                },
+            }]
+        }]
+    };
+
+
+    var myChart2 = echarts.init(document.getElementById('echarts2'));
+    option3 = {
+
+
+        series: [{
+
+            type: 'pie',
+            radius: ['70%', '80%'],
+            color: '#62b62f',
+            label: {
+                normal: {
+                    position: 'center'
+                }
+            },
+            data: [{
+                value: v3,
+                name: 'PS3',
+                label: {
+                    normal: {
+                        formatter: v3 + '',
+                        textStyle: {
+                            fontSize: 20,
+                            color: '#fff',
+                        }
+                    }
+                }
+            }, {
+                value: v4,
+                name: 'PS2',
+                label: {
+                    normal: {
+                        formatter: function (params) {
+                            return '占比' + Math.round(v3 / v4 * 100) + '%'
+                        },
+                        textStyle: {
+                            color: '#aaa',
+                            fontSize: 12
+                        }
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(255,255,255,.2)'
+                    },
+                    emphasis: {
+                        color: '#fff'
+                    }
+                },
+            }]
+        }]
+    };
+    setTimeout(function () {
+        myChart1.setOption(option1);
+        myChart2.setOption(option2);
+        myChart3.setOption(option3);
+    }, 1000);
+
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart5 = echarts.init(document.getElementById('echarts5'));
+    // Ajax接受数据主体
+    var Publisher = [];
+    var PublisherValue = [];
+    var datatemp = [];
+    $.ajax({
+        type: "GET",
+        url: "/getPublisherData",
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            for (var i = 0; i < result.length; i++) {
+                Publisher.push(result[i].publisher);
+                PublisherValue.push(result[i].publisherValue);
+                var ob = {publisher:"", publisherValue:""};
+                ob.publisher = result[i].publisher;
+                ob.publisherValue = result[i].publisherValue;
+                datatemp.push(ob);
+            }
+
+        },
+        error: function (errorMsg) {
+            alert("获取后台数据失败！");
+        }
+    });
+    // 指定图表的配置项和数据
+    var option = {
+        grid: {//柱状图位置
+            top:"4%",
+            left: '4%',
+            right: '4%',
+            bottom: '1%',
+            containLabel: true
+        },
+        tooltip: {},
+        xAxis: [{
+            data: Publisher,
+            axisLine: {//x轴样式
+                show: true,
+                lineStyle: {
+                    color: "#00c7ff",
+                    width: 1,
+                    type: "solid"
+                }
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: true,
+                showMaxLabel: true,
+                interval: 0,
+                rotate: 30,
+                textStyle: {
+                    color: "#00c7ff",
+                }
+            },
+        }],
+        yAxis: [{
+            type: 'value',
+            axisLabel :{
+                interval:0
+            },
+            axisLine: {//y轴样式
+                show: true,
+                lineStyle: {
+                    color: "#00c7ff",
+                    width: 1,
+                    type: "solid"
+                },
+            },
+            axisTick: {
+                show: false
+            },
+            splitLine: {//格线样式
+                lineStyle: {
+                    color: "#00c7ff",
+                }
+            }
+        }],
+        series: [{
+            name: 'PublisherValue',
+            type: 'bar',
+            barWidth: 20, //柱子宽度
+            data: PublisherValue,
+            emphasis: {
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: '#99d9ea'
+                    }, {
+                        offset: 1,
+                        color: '#3fa7dc'
+                    }])
+                }
+            },
+            itemStyle: {//柱样式
+                normal: {
+                    barBorderRadius: [5,5,0,0],
+                    color: function (params){//渐变色，也可以直接用数组给不同的柱子设置不同的颜色
+                        var colorList = [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#00fcae'
+                        }, {
+                            offset: 1,
+                            color: '#006388'
+                        }]),
+                        ];
+                        return colorList[params.dataIndex];
+                    },
+                    opacity: 1,
+                }
+            }
+        }],
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart5.setOption(option);
+
+
+
+    var myChart4 = echarts.init(document.getElementById('echarts4'));
+    var plantCap = [{
+        name: 'Aciton',
+        value: '3503'
+    }, {
+        name: 'Sports',
+        value: '2408'
+    }, {
+        name: 'Misc',
+        value: '1813'
+    }, {
+        name: 'Role-Playing',
+        value: '1545'
+    }, {
+        name: 'Adventure',
+        value: '1478'
+    }, {
+        name: 'Shooter',
+        value: '1349'
+    }, {
+        name: 'Racing',
+        value: '1282'
+    }];
+    var datalist = [{
+        offset: [56, 48],
+        symbolSize: 100,
+        color: 'rgba(73,188,247,.14)',
+
+    }, {
+
+        offset: [25, 75],
+        symbolSize: 85,
+        color: 'rgba(73,188,247,.14)'
+    }, {
+        offset: [0, 43],
+        symbolSize: 75,
+        color: 'rgba(73,188,247,.14)'
+
+    }, {
+        offset: [100, 50],
+        symbolSize: 70,
+        color: 'rgba(73,188,247,.14)'
+    }, {
+        offset: [26, 19],
+        symbolSize: 65,
+        color: 'rgba(73,188,247,.14)'
+    }, {
+        offset: [80, 80],
+        symbolSize: 60,
+        color: 'rgba(73,188,247,.14)'
+    }, {
+        offset: [80, 20],
+        symbolSize: 55,
+        color: 'rgba(73,188,247,.14)'
+    }];
+
+    var datas = [];
+    for (var i = 0; i < plantCap.length; i++) {
+        var item = plantCap[i];
+        var itemToStyle = datalist[i];
+        datas.push({
+            name: item.value + '\n' + item.name,
+            value: itemToStyle.offset,
+            symbolSize: itemToStyle.symbolSize,
+            label: {
+                normal: {
+                    textStyle: {
+                        fontSize: 14
+                    }
+                }
+            },
+
+            itemStyle: {
+                normal: {
+                    color: itemToStyle.color,
+                    opacity: itemToStyle.opacity
+                }
+            },
+        })
+    }
+    option = {
+        grid: {
+            show: false,
+            top: 10,
+            bottom: 10
+        },
+
+        xAxis: [{
+            gridIndex: 0,
+            type: 'value',
+            show: false,
+            min: 0,
+            max: 100,
+            nameLocation: 'middle',
+            nameGap: 5
+        }],
+
+        yAxis: [{
+            gridIndex: 0,
+            min: 0,
+            show: false,
+            max: 100,
+            nameLocation: 'middle',
+            nameGap: 30
+        }],
+        series: [{
+            type: 'scatter',
+            symbol: 'circle',
+            symbolSize: 120,
+            label: {
+                normal: {
+                    show: true,
+                    formatter: '{b}',
+                    color: '#FFF',
+                    textStyle: {
+                        fontSize: '30'
+                    }
+                },
+            },
+            itemStyle: {
+                normal: {
+                    color: '#F30'
+                }
+            },
+            data: datas
+        }]
+
+    };
+    myChart4.setOption(option);
+    $(document).ready(function () {
+        myChart4.resize();
+
+    })
+    window.addEventListener("resize", function () {
+        myChart4.resize();
+    });
+</script>
+<script type="text/javascript" src="js/china.js"></script>
+<script type="text/javascript" src="js/area_echarts.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+<script language="JavaScript" src="js/js.js"></script>
+<script>
+    //调用方法
+    NumDynamic("num1",30,134217728);
+    NumDynamic("num2",30,33554432);
+    /**
+     * 动态数字方法
+     * ID    => 对应ID
+     * speed => 递增速度
+     * value => 接入的数字
+     */
+    function NumDynamic(ID,speed,value){
+        var span1 = document.getElementById(ID);
+        if(value>0){
+            var num = 2;
+            var t = setInterval(function(){
+                num = num *= 2;
+                span1.innerText = num;
+                if(num==value){
+                    clearInterval(t);
+                }
+            },speed);
+        }else{
+            span1.innerText = value;
+        }
+    }
+</script>
+</body>
+</html>

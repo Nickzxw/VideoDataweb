@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>系统登录</title>
+
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+
+	<link rel='stylesheet' href='https://unicons.iconscout.com/release/v2.1.9/css/unicons.css'>
+
+	<link th:href="@{/css/style2.css}" rel="stylesheet">
+
+
+</head>
+<body>
+
+	<div class="section">
+		<div class="container">
+			<div class="row full-height justify-content-center">
+				<div class="col-12 text-center align-self-center py-5">
+					<div class="section pb-5 pt-5 pt-sm-2 text-center">
+						<h6 class="mb-0 pb-3"><span>登录</span><span>注册</span></h6>
+			          	<input class="checkbox" type="checkbox" id="reg-log" name="reg-log">
+			          	<label for="reg-log"></label>
+						<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrapper">
+								<div class="card-front">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">登录</h4>
+											<!--/* Workaround for bug https://youtrack.jetbrains.com/issue/IDEA-132738 -->
+											<!--@thymesVar id="msg" type="String"-->
+											<!--*/-->
+											<!--显示登录错误-->
+											<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+											<form th:action="@{/user/login}" method="post">
+												<div class="form-group">
+													<input type="text" name="username" class="form-style"
+														   placeholder="邮箱" id="logename" autocomplete="off">
+													<i class="input-icon uil uil-at"></i>
+												</div>
+												<div class="form-group mt-2">
+													<input type="password" name="password" class="form-style"
+														   placeholder="密码" id="logpass" autocomplete="off">
+													<i class="input-icon uil uil-lock-alt"></i>
+												</div>
+												<button type="submit" class="btn mt-4" name="login">登录</button>
+											</form>
+				      					</div>
+			      					</div>
+			      				</div>
+								<div class="card-back">
+									<div class="center-wrap">
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">注册</h4>
+											<form th:action="@{/user/register}" method="post">
+												<div class="form-group">
+													<input type="text" name="username" class="form-style"
+														   placeholder="邮箱" id="username" autocomplete="off">
+													<i class="input-icon uil uil-user"></i>
+												</div>
+												<div class="form-group mt-2">
+													<input type="password" name="password" class="form-style"
+														   placeholder="密码" id="password" autocomplete="off">
+													<i class="input-icon uil uil-lock-alt"></i>
+												</div>
+												<div class="form-group mt-2">
+													<input type="password" name="password2" class="form-style"
+														   placeholder="再次输入密码" id="password2" autocomplete="off">
+													<i class="input-icon uil uil-lock-alt"></i>
+												</div>
+												<div class="form-group mt-2">
+													<td valign="middle" align="right">
+														验证码:
+														<img id="num" th:src="@{/user/code}"/>
+														<a href="javascript:;"
+														   onclick="document.getElementById('num').src = 'user/code?'+(new Date()).getTime()">换一张</a>
+													</td>
+													<td valign="middle" align="left">
+														<input type="text" class="inputgri" name="code"/>
+													</td>
+												</div>
+												<button type="submit" class="btn mt-4" name="submit">提交</button>
+											</form>
+				      					</div>
+			      					</div>
+			      				</div>
+			      			</div>
+			      		</div>
+			      	</div>
+		      	</div>
+	      	</div>
+	    </div>
+	</div>
+	<script>
+		document.addEventListener("DOMContentLoaded",function(){
+			var oC=document.getElementById("c");
+			var gt=oC.getContext("2d");
+			//全屏
+			oC.width=window.innerWidth;
+			oC.height=window.innerHeight;
+			var font=16;
+			var txt="0123456789";
+			txt=txt.split("");
+			//列数
+			var col=oC.width/font;
+			var arr=[];
+			//初始值
+			for(var i=0;i<col;i++){
+				arr[i]=1;
+			}
+			//输出文字
+			function show(){
+				gt.fillStyle="rgba(0,0,0,0.05)";
+				gt.fillRect(0,0,oC.width,oC.height);
+				gt.fillStyle="green";
+				gt.font=font+"px arial";
+				for(var i=0;i<arr.length;i++){
+					//随机输出文字
+					var oT=txt[Math.floor(Math.random()*txt.length)];
+					//输出文字坐标
+					gt.fillText(oT, i*font, arr[i]*font);
+					//如果绘满一屏或随机数大于0.95（此数可自行调整，效果会不同）
+					if(arr[i]*font>oC.height || Math.random() > 0.95)
+						arr[i] = 0;
+					//用于Y轴坐标增加
+					arr[i]++;
+				}
+			}
+			setInterval(show,30);
+		},false)
+	</script>
+</body>
+</html>

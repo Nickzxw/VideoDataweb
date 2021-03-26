@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title><x></x>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://lib.baomitu.com/echarts/5.0.2/echarts.common.js"></script>
+    <script src="https://lib.baomitu.com/echarts/5.0.2/theme/vintage.js"></script>
+    <script src="https://lib.baomitu.com/echarts/5.0.2/theme/forest.js"></script>
+</head>
+
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 500px;height:400px;position:absolute;top:100px"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'), 'vintage');
+    // Ajax接受数据主体
+    var Publisher = [];
+    var PublisherValue = [];
+    var datatemp = [];
+    $.ajax({
+        type: "GET",
+        url: "/getPublisherData",
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            for (var i = 0; i < result.length; i++) {
+                Publisher.push(result[i].publisher);
+                PublisherValue.push(result[i].publisherValue);
+                var ob = {publisher:"", value:""};
+                ob.publisher = result[i].publisher;
+                ob.value = result[i].publisherValue;
+                datatemp.push(ob);
+            }
+
+        },
+        error: function (errorMsg) {
+            alert("获取后台数据失败！");
+        }
+    });
+    // 指定图表的配置项和数据
+    var option = {
+        tooltip: {},
+        legend: {
+            show: true,
+            data: [{name: 'PublisherValue'}]
+        },
+        xAxis: {
+            data: Publisher,
+            axisLabel: {
+                interval: 0,
+                rotate: 40
+            }
+        },
+        yAxis: {},
+        series: [{
+            name: 'PublisherValue',
+            type: 'bar',
+            data: PublisherValue
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+</script>
+</body>
